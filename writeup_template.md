@@ -1,40 +1,43 @@
 # **Behavioral Cloning** 
 
-## Writeup Template
-
-### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
----
-
-**Behavioral Cloning Project**
-
-The goals / steps of this project are the following:
-* Use the simulator to collect data of good driving behavior
-* Build, a convolution neural network in Keras that predicts steering angles from images
-* Train and validate the model with a training and validation set
-* Test that the model successfully drives around track one without leaving the road
-* Summarize the results with a written report
 
 
 [//]: # (Image References)
 
-[image1]: ./examples/placeholder.png "Model Visualization"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
+[image1]: ./examples/cover.png
+[image2]: ./examples/No.0_speed_limit_20.png
+[image3]: ./examples/sign_label_bar.png
+[image4]: ./examples/grayscale.png
+[image5]: ./examples/validation_accuracy.png
+[image6]: ./examples/additional_images.png
+[image7]: ./examples/top5_prob.png
 
-## Rubric Points
-### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
+
+This is a brief writeup report of Self-Driving Car Engineer P3.
+
+![alt text][image1]
+
+<img src="./examples/cover.png" width="50%" height="50%" />
 
 ---
-### Files Submitted & Code Quality
 
-#### 1. Submission includes all required files and can be used to run the simulator in autonomous mode
+**Steps Of This Project**
 
-My project includes the following files:
+
+* Use the [Simulator](https://github.com/udacity/self-driving-car-sim) to collect data of good driving behavior
+* Build a convolution neural network in Keras that predicts steering angles from images
+* Train and validate the model with a training and validation set
+* Test that the model autonomously drives around track one without leaving the road
+
+
+
+
+## Files and Code
+
+
+#### 1. The project includes the following files:
+
+
 * model.py containing the script to create and train the model
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
