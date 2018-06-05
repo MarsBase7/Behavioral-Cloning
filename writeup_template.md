@@ -4,18 +4,12 @@
 
 [//]: # (Image References)
 
-[image1]: ./examples/cover.png
-[image2]: ./examples/No.0_speed_limit_20.png
-[image3]: ./examples/sign_label_bar.png
-[image4]: ./examples/grayscale.png
-[image5]: ./examples/validation_accuracy.png
-[image6]: ./examples/additional_images.png
-[image7]: ./examples/top5_prob.png
+[image0]: ./examples/cover.png
+[image1]: ./examples/cnn-architecture-624x890.png
 
 
 This is a brief writeup report of Self-Driving Car Engineer P3.
 
-![alt text][image1]
 
 <img src="./examples/cover.png" width="50%" height="50%" />
 
@@ -38,32 +32,99 @@ This is a brief writeup report of Self-Driving Car Engineer P3.
 #### 1. The project includes the following files:
 
 
-* model.py containing the script to create and train the model
-* drive.py for driving the car in autonomous mode
-* model.h5 containing a trained convolution neural network 
-* writeup_report.md or writeup_report.pdf summarizing the results
+* `model.py` containing the script to create and train the model
+* `drive.py` for driving the car in autonomous mode
+* `model.h5` containing a trained convolution neural network 
 
-#### 2. Submission includes functional code
-Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
+
+#### 2. Functional code
+
+Using the **simulator** and **drive.py** file, the car can be driven autonomously around the track by executing 
 ```sh
 python drive.py model.h5
 ```
 
-#### 3. Submission code is usable and readable
+#### 3. Model code
 
-The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
+The **model.py** file contains the code for training and saving the convolution neural network. Also, the file shows the pipeline, which is used for training and validating the model.
 
-### Model Architecture and Training Strategy
 
-#### 1. An appropriate model architecture has been employed
+## Data Collection
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+Before training, the human behavior data on **Track 1** needs to be collected. 
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+Here are data collection strategies:
 
-#### 2. Attempts to reduce overfitting in the model
+> Counter-Clockwise ( the default direction of Track 1 )
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
+* **Center lane driving** × 2 laps
+* **Recovery driving from the sides** × 1 lap
+* **Focusing on driving smoothly around curves** × 1 lap
+
+> Clockwise
+
+* **Center lane driving smoothly** × 2 laps
+
+After that, the collected data includes a 'driving_log.csv' file and a bunch of camara images in shape of (160,320,3). 
+
+All those are approach 600MB.
+
+## Model Architecture
+
+The model of project was built by **Keras** and referenced some kind of common architectures.
+
+> First Try ( flatten only )
+
+At first, for testing the pipeline, the model consisted of a flatten layer only, which was, not surprisingly, too simple to have a good result. 「model.py lines 71-74」
+
+> Try Again ( LeNet-5 )
+
+The Old friend LeNet is a more powerful network architecture. It helped the simulator vehicle pass through the straight lane smoothly, but failed at curves. 「model.py lines 77-87」
+
+*'Hey, look, there's a car in the river, what happened?'*
+
+> Final Model ( NVIDIA's CNN )
+
+The architecture published by the autonomous vehicle team at NVIDIA is a even more powerful network. It has 5 convolution layers (with 3x3 or 5x5 filter sizes and depths between 24 and 64) and 3 full-connected layers.
+
+<img src="./examples/cnn-architecture-624x890.png" width="50%" height="50%" />
+
+Some tricks were used on the basis of the NVIDIA's architecture:
+
+* Normalization ( nomalize and 0 mean )
+
+`model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape = (160,320,3)))`
+
+* Cropping ( crop useless pixels of image, the sky, trees, hood, etc)
+
+`model.add(Cropping2D(cropping = ((70, 20), (0, 0))))`
+
+* Dropout layer ( reduce overfitting )
+
+`model.add(Dropout(0.2))`
+
+The final model makes the simulator vehicle be able to drive autonomously around the Track 1 without leaving the road. 「model.py lines 90-103」
+
+## Training Strategy
+
+
+#### 1. Training data process
+
+The vehicle has three camaras ( center, left and right ), and the side camara images carries two benifits rather than the center camara images only:
+
+* more training data ( 3 times as much )
+* help teach the network how to steer back to the center when drifting off
+
+By taking the actual steering measurement and adding a small correction `0.2` factor to it, those side camara images can be appended to the training data set appropriately. 「model.py lines 28-40」
+
+Simultaneously, data augmentation by flipping the images and steering measurements is also a common trick to expand training data set and help the model generalize better. In the project, the way of augmentation is flipping images by `cv2.flip()` function and taking the opposite sign of the corresponding steering measurements. 「model.py lines 46-51」
+
+#### 2. Training data process
+
+
+#### 3. Training data process
+ 2r2rqwer2
+
 
 The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
@@ -77,7 +138,7 @@ Training data was chosen to keep the vehicle driving on the road. I used a combi
 
 For details about how I created the training data, see the next section. 
 
-### Model Architecture and Training Strategy
+## Training Strategy
 
 #### 1. Solution Design Approach
 
@@ -130,3 +191,28 @@ After the collection process, I had X number of data points. I then preprocessed
 I finally randomly shuffled the data set and put Y% of the data into a validation set. 
 
 I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+
+```
+Train on 51657 samples, validate on 12915 samples
+physical GPU (device: 0, name: GeForce GTX 970, pci bus id: 0000:01:00.0, compute capability: 5.2)
+Epoch 1/7
+51657/51657 [==============================] - 83s - loss: 0.0200 - val_loss: 0.0240
+Epoch 2/7
+51657/51657 [==============================] - 72s - loss: 0.0112 - val_loss: 0.0128
+Epoch 3/7
+51657/51657 [==============================] - 72s - loss: 0.0061 - val_loss: 0.0096
+Epoch 4/7
+51657/51657 [==============================] - 72s - loss: 0.0054 - val_loss: 0.0095
+Epoch 5/7
+51657/51657 [==============================] - 72s - loss: 0.0051 - val_loss: 0.0096
+Epoch 6/7
+51657/51657 [==============================] - 72s - loss: 0.0048 - val_loss: 0.0096
+Epoch 7/7
+51657/51657 [==============================] - 72s - loss: 0.0046 - val_loss: 0.0094
+```
+
+```
+python drive.py model.h5 run1
+python video.py run1
+100%|████████████████| 15860/15860 [01:20<00:00, 198.19it/s]
+```
