@@ -8,6 +8,7 @@
 [image1]: ./examples/cnn-architecture-624x890.png
 [image2]: ./examples/Left_Center_Right.png
 [image3]: ./examples/flip.png
+[image4]: ./examples/poster.png
 
 This is a brief writeup report of Self-Driving Car Engineer P3.
 
@@ -183,8 +184,6 @@ Creating video run, FPS=60
 [MoviePy] >>>> Video ready: run.mp4 
 ```
 
-Here is a video example that the simulator vehicle drives on Track 1 autonomously, recording by center camara.
+Here is a video in the '/examples' that the simulator vehicle drives on Track 1 autonomously, recording by center camara.
 
-<video id="video" controls="" preload="none" poster="./examples/poster.png">
-      <source id="mp4" src="./examples/run.mp4" type="video/mp4">
-      </video>
+![alt text][image4]
