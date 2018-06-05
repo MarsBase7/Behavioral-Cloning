@@ -183,8 +183,8 @@ Creating video run, FPS=60
 [MoviePy] >>>> Video ready: run.mp4 
 ```
 
-Here is a video that the simulator vehicle drives one circle on Track 1 autonomously, recording by center camara.
+Here is a video example that the simulator vehicle drives on Track 1 autonomously, recording by center camara.
 
-<video id="video" controls="" preload="none" poster="./examples/run.mp4">
+<video id="video" controls="" preload="none" poster="./examples/poster.png">
       <source id="mp4" src="./examples/run.mp4" type="video/mp4">
       </video>
