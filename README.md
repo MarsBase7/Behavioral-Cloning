@@ -58,13 +58,13 @@ Before training, the human behavior data on **Track 1** needs to be collected.
 
 Here are data collection strategies:
 
-> ####Counter-Clockwise ( the default direction of Track 1 )
+> Counter-Clockwise ( the default direction of Track 1 )
 
 * **Center lane driving** × 2 laps
 * **Recovery driving from the sides** × 1 lap
 * **Focusing on driving smoothly around curves** × 1 lap
 
-> ####Clockwise
+> Clockwise
 
 * **Center lane driving smoothly** × 2 laps
 
@@ -78,19 +78,19 @@ All those are approach 600MB.
 
 The model of project is built by **Keras** and referenced some kind of common architectures.
 
-> ####First Try ( flatten only )
+> First Try ( flatten only )
 
 At first, for testing the pipeline, the model consisted of a flatten layer only, which was, not surprisingly, too simple to have a good result. 「model.py lines 71-74」
 
-> ####Try Again ( LeNet-5 )
+> Try Again ( LeNet-5 )
 
 The Old friend LeNet is a more powerful network architecture. It helped the simulator vehicle pass through the straight lane smoothly, but failed at curves. 「model.py lines 77-87」 *'Hey, look, there's a car in the river, what happened?'*
 
-> ####Final Model ( NVIDIA's CNN )
+> Final Model ( NVIDIA's CNN )
 
 The architecture published by the autonomous vehicle team at NVIDIA is a even more powerful network. It has **5 convolution layers** (with 3x3 or 5x5 filter sizes and depths between 24 and 64) and **3 full-connected layers**.
 
-<img src="./examples/cnn-architecture-624x890.png" width="40%" height="40%" />
+<img src="./examples/cnn-architecture-624x890.png" width="50%" height="50%" />
 
 Some tricks are used on the basis of the NVIDIA's architecture:
 
@@ -148,7 +148,7 @@ The training process takes about 10 minitus on GTX970.
 Train on 51657 samples, validate on 12915 samples
 physical GPU (device: 0, name: GeForce GTX 970, pci bus id: 0000:01:00.0, compute capability: 5.2)
 ```
-Benifiting from the NVIDIA's architecture, the model has a very fast convergence. After 7 epochs, the training loss is 0.46% and the validating loss is 0.94%.
+Benifiting from the NVIDIA's architecture, the model has a very fast convergence. After 7 epochs, the training loss is **0.46%** and the validating loss is **0.94%** .
 
 ```
 Epoch 1/7
@@ -184,6 +184,6 @@ Creating video run, FPS=60
 [MoviePy] >>>> Video ready: run.mp4 
 ```
 
-Here is a video in the '/examples' that the simulator vehicle drives on Track 1 autonomously, recording by center camara.
+Here is a [video](https://github.com/MarsBase7/Behavioral-Cloning/blob/master/examples/run.mp4) in the '/examples' that the simulator vehicle drives on Track 1 autonomously, recording by center camara.
 
-![alt text][image4]
+<img src="./examples/poster.png" width="70%" height="70%" />
