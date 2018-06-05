@@ -186,4 +186,4 @@ Creating video run, FPS=60
 
 Here is a [video](https://github.com/MarsBase7/Behavioral-Cloning/blob/master/examples/run.mp4) in the '/examples' that the simulator vehicle drives on Track 1 autonomously, recording by center camara.
 
-<img src="./examples/poster.png" width="70%" height="70%" />
+![alt text][image4]
