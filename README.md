@@ -68,7 +68,7 @@ Here are data collection strategies:
 
 * **Center lane driving smoothly** × 2 laps
 
-After that, the collected data includes a 'driving_log.csv' file with 10762 number of data points and a bunch of camara images in shape of (160,320,3). 
+After that, the collected data includes a 'driving_log.csv' file with 10762 number of data points and a bunch of camera images in shape of (160,320,3). 
 
 All those are approach 600MB.
 
@@ -121,12 +121,12 @@ The final model makes the simulator vehicle be able to drive autonomously around
 
 #### 1. Training data process
 
-The vehicle has three camaras ( center, left and right ), and the side camara images carries two benifits rather than the center camara images only:
+The vehicle has three cameras ( center, left and right ), and the side camera images carries two benifits rather than the center camera images only:
 
 * more training data ( 3 times as much )
 * help teach the network how to steer back to the center when drifting off
 
-By taking the actual steering measurement and adding a small correction `0.2` factor to it, those side camara images can be appended to the training data set appropriately. 「model.py lines 30-42」
+By taking the actual steering measurement and adding a small correction `0.2` factor to it, those side camera images can be appended to the training data set appropriately. 「model.py lines 30-42」
 
 ![alt text][image2]
 
@@ -195,7 +195,7 @@ Creating video run, FPS=60
 [MoviePy] >>>> Video ready: run.mp4 
 ```
 
-Here is a [video](https://github.com/MarsBase7/Behavioral-Cloning/blob/master/examples/run.mp4) in the '/examples' that the simulator vehicle drives on Track 1 autonomously, recording by center camara.
+Here is a [video](https://github.com/MarsBase7/Behavioral-Cloning/blob/master/examples/run.mp4) in the '/examples' that the simulator vehicle drives on Track 1 autonomously, recording by center camera.
 
 <!--![alt text][image4]<!---->
 <img src="./examples/poster.png" width="50%" height="50%" />
