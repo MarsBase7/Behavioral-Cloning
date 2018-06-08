@@ -109,6 +109,7 @@ Some tricks are used on the basis of the NVIDIA's architecture:
 * activation functions
 
 `model.add(Convolution2D(***, activation = 'relu'))`
+
 `model.add(Dense(***, activation = 'elu'))` 
 
 The final model makes the simulator vehicle be able to drive autonomously around the Track 1 without leaving the road. 「model.py lines 96-110」
@@ -146,7 +147,7 @@ At the end of the pipeline, some important parameters are passed into `model.fit
 
 #### 3. Training and Testing
 
-The training process takes about 9 minitus on GTX970.
+The training process takes about 9 minutes on GTX970.
 
 ```
 Train on 51657 samples, validate on 12915 samples
@@ -156,25 +157,25 @@ Benifiting from the NVIDIA's architecture, the model has a very fast convergence
 
 ```
 Epoch 1/10
-38572/38572 [==========] - 52s - loss: 0.0155 - val_loss: 0.0107
+51657/51657 [==========] - 52s - loss: 0.0155 - val_loss: 0.0107
 Epoch 2/10
-38572/38572 [==========] - 48s - loss: 0.0105 - val_loss: 0.0103  
+51657/51657 [==========] - 48s - loss: 0.0105 - val_loss: 0.0103  
 Epoch 3/10
-38572/38572 [==========] - 48s - loss: 0.0102 - val_loss: 0.0100 
+51657/51657 [==========] - 48s - loss: 0.0102 - val_loss: 0.0100 
 Epoch 4/10
-38572/38572 [==========] - 48s - loss: 0.0100 - val_loss: 0.0096  
+51657/51657 [==========] - 48s - loss: 0.0100 - val_loss: 0.0096  
 Epoch 5/10
-38572/38572 [==========] - 48s - loss: 0.0097 - val_loss: 0.0098          
+51657/51657 [==========] - 48s - loss: 0.0097 - val_loss: 0.0098          
 Epoch 6/10
-38572/38572 [==========] - 48s - loss: 0.0095 - val_loss: 0.0095                  
+51657/51657 [==========] - 48s - loss: 0.0095 - val_loss: 0.0095                  
 Epoch 7/10
-38572/38572 [==========] - 48s - loss: 0.0092 - val_loss: 0.0096
+51657/51657 [==========] - 48s - loss: 0.0092 - val_loss: 0.0096
 Epoch 8/10
-38572/38572 [==========] - 48s - loss: 0.0091 - val_loss: 0.0092    
+51657/51657 [==========] - 48s - loss: 0.0091 - val_loss: 0.0092    
 Epoch 9/10
-38572/38572 [==========] - 48s - loss: 0.0088 - val_loss: 0.0093 
+51657/51657 [==========] - 48s - loss: 0.0088 - val_loss: 0.0093 
 Epoch 10/10
-38572/38572 [==========] - 48s - loss: 0.0087 - val_loss: 0.0096
+51657/51657 [==========] - 48s - loss: 0.0087 - val_loss: 0.0096
 ```
 
 Testing result is good on Track 1. After starting `drive.py`, the simulator vehicle can drive autonomously around in speed of 9 mph without leaving the road, even curves.
