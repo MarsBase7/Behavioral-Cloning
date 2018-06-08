@@ -197,4 +197,13 @@ Creating video run, FPS=60
 
 Here is a [video](https://github.com/MarsBase7/Behavioral-Cloning/blob/master/examples/run.mp4) in the '/examples' that the simulator vehicle drives on Track 1 autonomously, recording by center camara.
 
-![alt text][image4]
+<!--![alt text][image4]<!---->
+<img src="./examples/poster.png" width="50%" height="50%" />
+
+## Experience Summary
+
+* Training data is very important, the simulator vehicle can not drive much better than your behavior.
+* Dropout is useful but not necessary.
+* ELU is a little better than ReLU in this model.
+* The number of epochs is more effective in 5 ~ 10.
+* Keras model.fit() always shuffles training data after data split, so you may need create shuffle process yourself beforce fit().
