@@ -18,13 +18,15 @@ with open('./data/driving_log.csv') as csvfile:
     for line in reader:
         lines.append(line)
 
+lines = lines[1:]
+
 cftime = time.time()
 print(taketime(cftime - starttime) + '...\'driving_log.csv\' Loaded')
 
 images = []
 measurements = []
 
-# Three Camara (Center, left, right)
+# Three Camera images loading (Center, left, right)
 correction = 0.2
 for line in lines:
     steering_center = float(line[3])
@@ -56,13 +58,17 @@ print(taketime(fdtime - starttime) + '...Flipping Done')
 X_train = np.array(augmented_images) # images
 y_train = np.array(augmented_measurements) # angles
 
-# from sklearn.utils import shuffle
-# X_train, y_train = shuffle(X_train, y_train) # shuffle training data
+from sklearn.utils import shuffle
+X_train, y_train = shuffle(X_train, y_train) # shuffle training data
+
+sttime = time.time()
+print(taketime(sttime - starttime) + '...Flipping Done')
 
 from keras.models import Sequential
 from keras.layers import Flatten, Dense, Lambda, Dropout
 from keras.layers.convolutional import Convolution2D, Cropping2D
 from keras.layers.pooling import MaxPooling2D
+from keras.layers.advanced_activations import ELU
 # from keras.utils import plot_model # network visualization
 
 print('...Keras go go go')
@@ -97,15 +103,16 @@ model.add(Convolution2D(64,3,3, activation = 'relu'))
 model.add(Convolution2D(64,3,3, activation = 'relu'))
 model.add(Dropout(0.2)) # add a dropout to reduce overfitting
 model.add(Flatten())
-model.add(Dense(100))
-model.add(Dense(50))
-model.add(Dense(10))
+model.add(Dense(1164, activation = 'elu'))
+model.add(Dense(100, activation = 'elu'))
+model.add(Dense(50, activation = 'elu'))
+model.add(Dense(10, activation = 'elu'))
 model.add(Dense(1))
 
 model.compile(loss = 'mse', optimizer = 'adam')
-model.fit(X_train, y_train, batch_size = 256, validation_split = 0.2, shuffle = True, nb_epoch = 7, verbose = 1)
+model.fit(X_train, y_train, validation_split = 0.2, shuffle = True, nb_epoch = 10, verbose = 1)
 
-model.save('model.h5')
+model.save('model_new.h5')
 
 alltime = time.time()
 print(taketime(alltime - starttime) + '...Model Saved') 

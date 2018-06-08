@@ -80,15 +80,15 @@ The model of project is built by **Keras** and referenced some kind of common ar
 
 > First Try ( flatten only )
 
-At first, for testing the pipeline, the model consisted of a flatten layer only, which was, not surprisingly, too simple to have a good result. 「model.py lines 71-74」
+At first, for testing the pipeline, the model consisted of a flatten layer only, which was, not surprisingly, too simple to have a good result. 「model.py lines 77-80」
 
 > Try Again ( LeNet-5 )
 
-The Old friend LeNet is a more powerful network architecture. It helped the simulator vehicle pass through the straight lane smoothly, but failed at curves. 「model.py lines 77-87」 *'Hey, look, there's a car in the river, what happened?'*
+The Old friend LeNet is a more powerful network architecture. It helped the simulator vehicle pass through the straight lane smoothly, but failed at curves. 「model.py lines 83-93」 *'Hey, look, there's a car in the river, what happened?'*
 
 > Final Model ( NVIDIA's CNN )
 
-The architecture published by the autonomous vehicle team at NVIDIA is a even more powerful network. It has **5 convolution layers** (with 3x3 or 5x5 filter sizes and depths between 24 and 64) and **3 full-connected layers**.
+The architecture published by the autonomous vehicle team at NVIDIA is a even more powerful network. It has **5 convolution layers** (with 3x3 or 5x5 filter sizes and depths between 24 and 64) and **4 full-connected layers**.
 
 <img src="./examples/cnn-architecture-624x890.png" width="50%" height="50%" />
 
@@ -106,7 +106,12 @@ Some tricks are used on the basis of the NVIDIA's architecture:
 
 `model.add(Dropout(0.2))`
 
-The final model makes the simulator vehicle be able to drive autonomously around the Track 1 without leaving the road. 「model.py lines 90-103」
+* activation functions
+
+`model.add(Convolution2D(***, activation = 'relu'))`
+`model.add(Dense(***, activation = 'elu'))` 
+
+The final model makes the simulator vehicle be able to drive autonomously around the Track 1 without leaving the road. 「model.py lines 96-110」
 
 <Br/>
 
@@ -120,11 +125,11 @@ The vehicle has three camaras ( center, left and right ), and the side camara im
 * more training data ( 3 times as much )
 * help teach the network how to steer back to the center when drifting off
 
-By taking the actual steering measurement and adding a small correction `0.2` factor to it, those side camara images can be appended to the training data set appropriately. 「model.py lines 28-40」
+By taking the actual steering measurement and adding a small correction `0.2` factor to it, those side camara images can be appended to the training data set appropriately. 「model.py lines 30-42」
 
 ![alt text][image2]
 
-Simultaneously, data augmentation by flipping the images and steering measurements is also a common trick to expand training data set and help the model generalize better. In the project, the way of augmentation is flipping images by `cv2.flip()` function and taking the opposite sign of the corresponding steering measurements. 「model.py lines 46-51」
+Simultaneously, data augmentation by flipping the images and steering measurements is also a common trick to expand training data set and help the model generalize better. In the project, the way of augmentation is flipping images by `cv2.flip()` function and taking the opposite sign of the corresponding steering measurements. 「model.py lines 48-53」
 
 ![alt text][image3]
 
@@ -134,37 +139,42 @@ Because it's a regression network instead of a classification network, the softm
 
 At the end of the pipeline, some important parameters are passed into `model.fit()` :
 
-* `batch_size = 256` (the memory of GPU would burst without setting)
 * `validation_split = 0.2` (80% for training, 20% for validating)
 * `shuffle = True` (as we know...)
-* `nb_epoch = 7` （a good convergence）
+* `nb_epoch = 10` （a good convergence）
 
 
 #### 3. Training and Testing
 
-The training process takes about 10 minitus on GTX970.
+The training process takes about 9 minitus on GTX970.
 
 ```
 Train on 51657 samples, validate on 12915 samples
 physical GPU (device: 0, name: GeForce GTX 970, pci bus id: 0000:01:00.0, compute capability: 5.2)
 ```
-Benifiting from the NVIDIA's architecture, the model has a very fast convergence. After 7 epochs, the training loss is **0.46%** and the validating loss is **0.94%** .
+Benifiting from the NVIDIA's architecture, the model has a very fast convergence. After 10 epochs, the training loss is **0.87%** and the validating loss is **0.96%** .
 
 ```
-Epoch 1/7
-51657/51657 [============] - 83s - loss: 0.0200 - val_loss: 0.0240
-Epoch 2/7
-51657/51657 [============] - 72s - loss: 0.0112 - val_loss: 0.0128
-Epoch 3/7
-51657/51657 [============] - 72s - loss: 0.0061 - val_loss: 0.0096
-Epoch 4/7
-51657/51657 [============] - 72s - loss: 0.0054 - val_loss: 0.0095
-Epoch 5/7
-51657/51657 [============] - 72s - loss: 0.0051 - val_loss: 0.0096
-Epoch 6/7
-51657/51657 [============] - 72s - loss: 0.0048 - val_loss: 0.0096
-Epoch 7/7
-51657/51657 [============] - 72s - loss: 0.0046 - val_loss: 0.0094
+Epoch 1/10
+38572/38572 [==========] - 52s - loss: 0.0155 - val_loss: 0.0107
+Epoch 2/10
+38572/38572 [==========] - 48s - loss: 0.0105 - val_loss: 0.0103  
+Epoch 3/10
+38572/38572 [==========] - 48s - loss: 0.0102 - val_loss: 0.0100 
+Epoch 4/10
+38572/38572 [==========] - 48s - loss: 0.0100 - val_loss: 0.0096  
+Epoch 5/10
+38572/38572 [==========] - 48s - loss: 0.0097 - val_loss: 0.0098          
+Epoch 6/10
+38572/38572 [==========] - 48s - loss: 0.0095 - val_loss: 0.0095                  
+Epoch 7/10
+38572/38572 [==========] - 48s - loss: 0.0092 - val_loss: 0.0096
+Epoch 8/10
+38572/38572 [==========] - 48s - loss: 0.0091 - val_loss: 0.0092    
+Epoch 9/10
+38572/38572 [==========] - 48s - loss: 0.0088 - val_loss: 0.0093 
+Epoch 10/10
+38572/38572 [==========] - 48s - loss: 0.0087 - val_loss: 0.0096
 ```
 
 Testing result is good on Track 1. After starting `drive.py`, the simulator vehicle can drive autonomously around in speed of 9 mph without leaving the road, even curves.
@@ -179,7 +189,7 @@ BTW, the `video.py` file can help creating video recording when in autonomous mo
 Creating video run, FPS=60
 [MoviePy] >>>> Building video run.mp4
 [MoviePy] Writing video run.mp4
-100%|████████████████| 8838/8838 [00:34<00:00, 255.34it/s]
+100%|████████████████| 7334/7334 [00:30<00:00, 243.14it/s]
 [MoviePy] Done.
 [MoviePy] >>>> Video ready: run.mp4 
 ```
