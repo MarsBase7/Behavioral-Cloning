@@ -200,6 +200,8 @@ Here is a [video](https://github.com/MarsBase7/Behavioral-Cloning/blob/master/ex
 <!--![alt text][image4]<!---->
 <img src="./examples/poster.png" width="50%" height="50%" />
 
+<Br/>
+
 ## Experience Summary
 
 * Training data is very important, the simulator vehicle can not drive much better than your behavior.
